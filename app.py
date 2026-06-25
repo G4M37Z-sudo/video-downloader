@@ -19,11 +19,16 @@ def get_video_info(url):
             "--no-download",
             "--dump-json",
             "--no-warnings",
+            "--no-check-certificates",
             url
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
         if result.returncode != 0:
-            return None, result.stderr[:500]
+            err = result.stderr[:500]
+            # Provide helpful error for YouTube sign-in requirement
+            if "Sign in to confirm" in err or "Use --cookies-from-browser" in err:
+                return None, "YouTube requires sign-in to verify you're not a bot. This cannot be bypassed on a server. Try: 1) Use a non-YouTube site, 2) Use Cobalt.tools directly, or 3) Self-host with YouTube cookies."
+            return None, err
         
         # yt-dlp can return multiple lines (playlists); take the first entry
         lines = result.stdout.strip().split("\n")
@@ -126,6 +131,7 @@ def api_download():
         "-o", out_path,
         "--no-warnings",
         "--no-playlist",
+        "--no-check-certificates",
         url
     ]
 

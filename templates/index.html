@@ -235,6 +235,16 @@
             margin-bottom: 20px;
         }
 
+        .error-box.youtube-error {
+            background: #1F1A0D;
+            border-color: #5F4A2D;
+            color: #D4A853;
+        }
+
+        .error-box.youtube-error a {
+            color: #D4A853;
+        }
+
         @keyframes revealUp {
             to {
                 opacity: 1;
@@ -252,7 +262,7 @@
 </head>
 <body>
     <h1>Video Downloader</h1>
-    <p class="subtitle">Paste a link — downloads from 1000+ sites (YouTube, Twitter, TikTok, Vimeo, etc.)</p>
+    <p class="subtitle">Paste a link — downloads from 1000+ sites (Twitter, TikTok, Vimeo, Instagram, etc.) · YouTube may require auth</p>
 
     <div class="input-group">
         <input type="url" id="urlInput" placeholder="Paste video URL here..." autocomplete="off" />
@@ -289,7 +299,10 @@
                 const data = await res.json();
 
                 if (!res.ok) {
-                    content.innerHTML = `<div class="error-box">⚠️ ${escapeHtml(data.error)}</div>`;
+                    const isYoutubeError = data.error && (data.error.includes("YouTube") || data.error.includes("sign-in") || data.error.includes("cookies"));
+                    const errorClass = isYoutubeError ? 'error-box youtube-error' : 'error-box';
+                    const icon = isYoutubeError ? '🔒' : '⚠️';
+                    content.innerHTML = `<div class="${errorClass}">${icon} ${escapeHtml(data.error)}</div>`;
                     return;
                 }
 
