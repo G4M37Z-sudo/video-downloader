@@ -55,7 +55,8 @@ def sanitize_filename(name):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    adsense_id = os.environ.get("ADSENSE_CLIENT", "REPLACE_ME")
+    return render_template("index.html", adsense_id=adsense_id)
 
 
 @app.route("/privacy")

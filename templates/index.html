@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Downloader</title>
+    <!-- AdSense — publisher ID set via ADSENSE_CLIENT env var on Render. Do NOT hardcode in repo. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-{{ adsense_id }}"
+     crossorigin="anonymous"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -343,11 +346,11 @@
     <div id="content"></div>
 
     <div class="ad-slot">
-        <!-- AdSense ad unit — replace data-ad-sensor with your publisher ID -->
+        <!-- AdSense ad unit — data-ad-client set via ADSENSE_CLIENT env var on Render -->
         <ins class="adsbygoogle"
              style="display:block"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-             data-ad-slot="1234567890"
+             data-ad-client="ca-pub-{{ adsense_id }}"
+             data-ad-slot="REPLACE_ME"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
