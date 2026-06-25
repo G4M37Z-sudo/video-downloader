@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0A0A0F;
+            color: #E0E0E0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #D4A853;
+            margin-bottom: 8px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.6s ease forwards;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.6s ease 0.1s forwards;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            max-width: 700px;
+            width: 100%;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.6s ease 0.2s forwards;
+        }
+
+        input[type="url"] {
+            flex: 1;
+            padding: 14px 20px;
+            border: 1px solid #222;
+            border-radius: 8px;
+            background: #111;
+            color: #E0E0E0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="url"]:focus {
+            border-color: #D4A853;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: 1px solid #D4A853;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #D4A853;
+            color: #0A0A0F;
+        }
+
+        .btn-primary:hover {
+            background: #E0B96A;
+            box-shadow: 0 0 20px rgba(212, 168, 83, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #D4A853;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 168, 83, 0.08);
+        }
+
+        /* Video info card */
+        .video-card {
+            max-width: 700px;
+            width: 100%;
+            background: #111;
+            border: 1px solid #1A1A1F;
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.5s ease forwards;
+            margin-bottom: 20px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            background: #0A0A0F;
+        }
+
+        .info-body {
+            padding: 20px;
+        }
+
+        .info-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            color: #FFF;
+        }
+
+        .meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .format-select {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .format-btn {
+            padding: 8px 16px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background: #0A0A0F;
+            color: #CCC;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .format-btn:hover {
+            border-color: #D4A853;
+            color: #D4A853;
+        }
+
+        .format-btn.active {
+            border-color: #D4A853;
+            background: rgba(212, 168, 83, 0.1);
+            color: #D4A853;
+        }
+
+        .download-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress {
+            max-width: 700px;
+            width: 100%;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.4s ease forwards;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #222;
+            border-top-color: #D4A853;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-box {
+            max-width: 700px;
+            width: 100%;
+            background: #0D1F0D;
+            border: 1px solid #2D5F2D;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.4s ease forwards;
+        }
+
+        .success-box .icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .error-box {
+            max-width: 700px;
+            width: 100%;
+            background: #1F0D0D;
+            border: 1px solid #5F2D2D;
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #FF6B6B;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.4s ease forwards;
+            margin-bottom: 20px;
+        }
+
+        @keyframes revealUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 60px;
+            color: #333;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Downloader</h1>
+    <p class="subtitle">Paste a link — downloads from 1000+ sites (YouTube, Twitter, TikTok, Vimeo, etc.)</p>
+
+    <div class="input-group">
+        <input type="url" id="urlInput" placeholder="Paste video URL here..." autocomplete="off" />
+        <button class="btn btn-primary" id="fetchBtn" onclick="fetchInfo()">Fetch</button>
+    </div>
+
+    <div id="content"></div>
+
+    <footer>Powered by yt-dlp · No analytics · Runs locally</footer>
+
+    <script>
+        const urlInput = document.getElementById('urlInput');
+        const fetchBtn = document.getElementById('fetchBtn');
+        const content = document.getElementById('content');
+        let selectedFormat = 'best';
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') fetchInfo();
+        });
+
+        async function fetchInfo() {
+            const url = urlInput.value.trim();
+            if (!url) return;
+
+            fetchBtn.disabled = true;
+            content.innerHTML = '<div class="progress"><div class="spinner"></div><p>Fetching video info...</p></div>';
+
+            try {
+                const res = await fetch('/api/info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    content.innerHTML = `<div class="error-box">⚠️ ${escapeHtml(data.error)}</div>`;
+                    return;
+                }
+
+                selectedFormat = data.formats.length > 0 ? data.formats[0].format_id : 'best';
+
+                const formatBtns = data.formats.map((f, i) =>
+                    `<button class="format-btn ${i === 0 ? 'active' : ''}" onclick="selectFormat(this, '${f.format_id}')">${f.resolution} (${f.ext})</button>`
+                ).join('');
+
+                content.innerHTML = `
+                    <div class="video-card">
+                        ${data.thumbnail ? `<img class="thumbnail" src="${escapeHtml(data.thumbnail)}" alt="" />` : ''}
+                        <div class="info-body">
+                            <div class="info-title">${escapeHtml(data.title)}</div>
+                            <div class="meta">
+                                <span>${escapeHtml(data.uploader)}</span>
+                                <span>${escapeHtml(data.duration)}</span>
+                            </div>
+                            <div class="format-select">${formatBtns}</div>
+                            <div class="download-row">
+                                <button class="btn btn-primary" onclick="startDownload()">
+                                    ⬇ Download Video
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                content.innerHTML = `<div class="error-box">⚠️ Network error: ${escapeHtml(err.message)}</div>`;
+            } finally {
+                fetchBtn.disabled = false;
+            }
+        }
+
+        function selectFormat(btn, formatId) {
+            document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedFormat = formatId;
+        }
+
+        async function startDownload() {
+            const url = urlInput.value.trim();
+            content.innerHTML = '<div class="progress"><div class="spinner"></div><p>Downloading... this may take a while for large videos.</p></div>';
+
+            try {
+                const res = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, format_id: selectedFormat })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    content.innerHTML = `<div class="error-box">⚠️ ${escapeHtml(data.error)}</div>`;
+                    return;
+                }
+
+                content.innerHTML = `
+                    <div class="success-box">
+                        <div class="icon">✅</div>
+                        <p style="font-weight:600; margin-bottom:8px;">${escapeHtml(data.filename)}</p>
+                        <p style="color:#888; margin-bottom:16px;">${data.size_mb} MB downloaded</p>
+                        <a href="/api/save/${encodeURIComponent(data.filename)}" class="btn btn-secondary" style="text-decoration:none; display:inline-block;">
+                            💾 Save to Computer
+                        </a>
+                    </div>
+                `;
+            } catch (err) {
+                content.innerHTML = `<div class="error-box">⚠️ Download failed: ${escapeHtml(err.message)}</div>`;
+            }
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
