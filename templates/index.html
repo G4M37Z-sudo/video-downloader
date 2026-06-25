@@ -300,9 +300,14 @@
 
                 if (!res.ok) {
                     const isYoutubeError = data.error && (data.error.includes("YouTube") || data.error.includes("sign-in") || data.error.includes("cookies"));
-                    const errorClass = isYoutubeError ? 'error-box youtube-error' : 'error-box';
-                    const icon = isYoutubeError ? '🔒' : '⚠️';
-                    content.innerHTML = `<div class="${errorClass}">${icon} ${escapeHtml(data.error)}</div>`;
+                    const isCloudflareError = data.error && (data.error.includes("Cloudflare") || data.error.includes("anti-bot"));
+                    const errorClass = (isYoutubeError || isCloudflareError) ? 'error-box youtube-error' : 'error-box';
+                    const icon = (isYoutubeError || isCloudflareError) ? '🔒' : '⚠️';
+                    const cobaltUrl = `https://cobalt.tools/?url=${encodeURIComponent(url)}`;
+                    const cobaltBtn = (isYoutubeError || isCloudflareError)
+                        ? `<br/><br/><a href="${cobaltUrl}" target="_blank" rel="noopener" class="btn btn-secondary" style="text-decoration:none; display:inline-block;">🔄 Try with Cobalt</a>`
+                        : '';
+                    content.innerHTML = `<div class="${errorClass}">${icon} ${escapeHtml(data.error)}${cobaltBtn}</div>`;
                     return;
                 }
 
