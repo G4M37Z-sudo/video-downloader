@@ -59,6 +59,12 @@ def index():
     return render_template("index.html", adsense_id=adsense_id)
 
 
+@app.route("/ads.txt")
+def ads_txt():
+    adsense_id = os.environ.get("ADSENSE_CLIENT", "REPLACE_ME")
+    return f"google.com, pub-{adsense_id}, DIRECT, f08c47fec0942fa0", 200, {"Content-Type": "text/plain"}
+
+
 @app.route("/privacy")
 def privacy():
     return render_template("privacy.html")
