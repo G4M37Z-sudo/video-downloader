@@ -20,6 +20,7 @@ def get_video_info(url):
             "--dump-json",
             "--no-warnings",
             "--no-check-certificates",
+            "--extractor-args", "generic:impersonate",
             url
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -28,6 +29,9 @@ def get_video_info(url):
             # Provide helpful error for YouTube sign-in requirement
             if "Sign in to confirm" in err or "Use --cookies-from-browser" in err:
                 return None, "YouTube requires sign-in to verify you're not a bot. This cannot be bypassed on a server. Try: 1) Use a non-YouTube site, 2) Use Cobalt.tools directly, or 3) Self-host with YouTube cookies."
+            # Provide helpful error for Cloudflare/anti-bot
+            if "Cloudflare" in err or "403" in err or "impersonat" in err:
+                return None, "This site has Cloudflare/anti-bot protection that blocks server requests. Try again later, or use an alternative like Cobalt.tools."
             return None, err
         
         # yt-dlp can return multiple lines (playlists); take the first entry
@@ -132,6 +136,7 @@ def api_download():
         "--no-warnings",
         "--no-playlist",
         "--no-check-certificates",
+        "--extractor-args", "generic:impersonate",
         url
     ]
 
