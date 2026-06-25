@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Video Downloader</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0A0A0F;
+            color: #E0E0E0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .legal-page {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .legal-page h2 {
+            color: #D4A853;
+            font-size: 1.5rem;
+            margin: 30px 0 10px;
+        }
+        .legal-page h3 {
+            color: #CCC;
+            font-size: 1.1rem;
+            margin: 20px 0 8px;
+        }
+        .legal-page p, .legal-page li {
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+        .legal-page ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #D4A853;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .contact-form {
+            margin-top: 20px;
+        }
+        .contact-form label {
+            display: block;
+            color: #CCC;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #222;
+            border-radius: 8px;
+            background: #111;
+            color: #E0E0E0;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #D4A853;
+        }
+        .contact-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .contact-form button {
+            margin-top: 16px;
+            padding: 12px 28px;
+            border: 1px solid #D4A853;
+            border-radius: 8px;
+            background: #D4A853;
+            color: #0A0A0F;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .contact-form button:hover {
+            background: #E0B96A;
+            box-shadow: 0 0 20px rgba(212, 168, 83, 0.3);
+        }
+        .email-box {
+            background: #111;
+            border: 1px solid #1A1A1F;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 16px;
+        }
+        .email-box code {
+            color: #D4A853;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="legal-page">
+        <a href="/" class="back-link">← Back to Home</a>
+        <h2>Contact Us</h2>
+        <p>Have a question, issue, or feedback? Reach out to us.</p>
+
+        <h3>Email</h3>
+        <div class="email-box">
+            <code>support@yourdomain.com</code>
+        </div>
+        <p style="margin-top: 8px; color: #666; font-size: 0.85rem;">Replace with your actual email address.</p>
+
+        <h3>Send a Message</h3>
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent! (This is a demo — wire up a backend to actually send emails.)');">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Your name" />
+            <label for="email">Email</label>
+            <input type="email" id="email=" placeholder="your@email.com" />
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="How can we help?"></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+
+        <h3 style="margin-top: 30px;">DMCA / Copyright</h3>
+        <p>For copyright takedown requests, please email with "DMCA" in the subject line and include the required information as outlined in our <a href="/terms" style="color:#D4A853;">Terms of Service</a>.</p>
+
+        <h3>Response Time</h3>
+        <p>We aim to respond within 24-48 hours.</p>
+    </div>
+</body>
+</html>
